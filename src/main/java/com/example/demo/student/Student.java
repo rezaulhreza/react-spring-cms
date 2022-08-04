@@ -24,15 +24,15 @@ public class Student {
 	private Long id;
 	private String name;
 	private String email;
-	private Gender gender;
+	private Enum<Gender> gender;
 	public Student(@JsonProperty("id") long id,
 			@JsonProperty("name") String name,
 			@JsonProperty("email") String email,
-			@JsonProperty("gender")Gender gender) {
+			@JsonProperty("gender")Enum<Gender> male) {
 		 	this.id = id;
 	        this.name = name;
 			this.email = email;
-	        this.gender = gender;
+	        this.gender = male;
 		
 	}
 	/**
@@ -59,7 +59,7 @@ public class Student {
 	/**
 	 * @return the gender
 	 */
-	public Gender getGender() {
+	public Enum<Gender> getGender() {
 		return gender;
 	}
 	/**
