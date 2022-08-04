@@ -28,11 +28,11 @@ public class Student {
 	public Student(@JsonProperty("id") long id,
 			@JsonProperty("name") String name,
 			@JsonProperty("email") String email,
-			@JsonProperty("gender")Enum<Gender> male) {
+			@JsonProperty("gender")Enum<Gender> gender) {
 		 	this.id = id;
 	        this.name = name;
 			this.email = email;
-	        this.gender = male;
+	        this.gender = gender;
 		
 	}
 	/**

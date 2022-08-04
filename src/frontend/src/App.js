@@ -1,12 +1,13 @@
 import { getAllStudents } from "./client";
 import { useState, useEffect } from "react";
-import { Layout, Menu, Breadcrumb, Table } from "antd";
+import { Layout, Menu, Breadcrumb, Table, Spin, Empty  } from "antd";
 import {
   DesktopOutlined,
   PieChartOutlined,
   FileOutlined,
   TeamOutlined,
   UserOutlined,
+  LoadingOutlined 
 } from "@ant-design/icons";
 
 import "./App.css";
@@ -36,16 +37,20 @@ const columns = [
   },
 ];
 
+const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
 function App() {
   const [collapsed, setCollapsed] = useState(false);
-  //destructring, it is coming from useState hook : initial state
+  //destructuring, it is coming from useState hook : initial state
   const [students, setStudents] = useState([]);
+  const[fetching, setFetching] = useState(true);
 
   const fetchStudents = () =>
     getAllStudents()
       .then((res) => res.json())
       .then((data) => {
         setStudents(data);
+        setFetching(false);
       });
   //run the function when component loads. invoke this method once
   useEffect(() => {
@@ -53,15 +58,17 @@ function App() {
   }, []); //empty square bracket means 0 deps
 
   const renderStudents = () => {
-    if (students.length <= 0) {
-      return "No data found";
+    if(fetching){
+     return <Spin indicator={antIcon} /> 
     }
-    return <Table 
-    dataSource={students}
-    columns={columns}/>;
+    if (students.length <= 0) {
+      return <Empty />;
+    }
+    return <Table rowKey={(student) => student.id} dataSource={students} columns={columns}  bordered
+    pagination={{ pageSize: 50 }} scroll={{ y: 240 }}
+    title={() => 'Students'}/>;
   };
 
-  
   return (
     <Layout style={{ minHeight: "100vh" }}>
       <Sider collapsible collapsed={collapsed} onCollapse={setCollapsed}>
@@ -95,16 +102,15 @@ function App() {
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
           <div
+            key={students.id}
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-
             {renderStudents()}
-
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
+          Developed By Rezaul H Reza
         </Footer>
       </Layout>
     </Layout>
